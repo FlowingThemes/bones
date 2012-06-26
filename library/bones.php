@@ -48,6 +48,9 @@ function bones_ahoy() {
     add_filter('the_content', 'bones_filter_ptags_on_images');
     // cleaning up excerpt
     add_filter('excerpt_more', 'bones_excerpt_more');
+
+    // adding custom editor stylesheets for posts and custom post types
+    add_action( 'admin_head', 'bones_custom_editor_stylesheet' );
     
 } /* end bones ahoy */
 
@@ -365,6 +368,19 @@ function bones_excerpt_more($more) {
 	return '...  <a href="'. get_permalink($post->ID) . '" title="Read '.get_the_title($post->ID).'">Read more &raquo;</a>';
 }
 
-                  	
-
+/*********************
+CUSTOM STYLESHEET SUPPORT FOR THE EDITOR  
+*********************/
+// the function enables custom stylesheet support for the post and custom post types in the editor                  	
+function bones_custom_editor_stylesheet(){
+    global $current_screen;
+    // thanks to Jonas Hellwig
+    // src: http://blog.kulturbanause.de/2011/12/wordpress-editor-komplexe-inhaltsstrukturen-benutzerfreundlich-pflegen/
+    add_editor_style(
+	    array(
+		'library/css/editor-style.css',
+		'library/css/editor-style-'.$current_screen->post_type.'.css'
+	    )
+	);
+}
 ?>
